@@ -13,7 +13,7 @@ Topic/subtopic index only — no resource links yet.
 | **P2** | Role-specific — asked mainly for specialized roles (inference/infra, research, CV, RL) |
 | **P3** | Niche/depth — rarely a primary question; signals depth if you know it |
 
-- Domains keep their 1–7 numbering. **Categories inside each domain are ordered by importance**, rows inside each table are sorted P0 → P3, and **subtopics inside each cell are listed most-asked first**.
+- Domains keep their 1–7 numbering. **Categories inside each domain are ordered by importance**, rows inside each table are sorted P0 → P3, and **subtopics inside each cell are listed most-asked first**. **Exception — Domain 5** follows a learning order instead: categories, rows and subtopics are arranged so each one builds on the ones before it.
 - IDs are stable (Domain 5 IDs were already approved); ordering by priority means IDs are not sequential within a table. Topics marked **(new)** were added in this revamp to fill high-frequency interview gaps.
 - **Caveat:** priority tiers are an editorial judgment based on widely-known interview patterns for MLE / Applied Scientist / Research Scientist / LLM / Inference roles — they are **not** computed from a measured dataset of interview questions. If you want them calibrated against real question banks, that's a separate research pass.
 
@@ -502,273 +502,273 @@ Most relevant to: CV Engineer, Applied Scientist (vision), MLE on perception/rob
 
 # Domain 5 — Modern NLP and LLMs (prefix LLM)
 
-Most relevant to: LLM Engineer, Research Scientist/Engineer, Applied Scientist, Inference/Serving and AI Infra roles. Full rows are inline here (this replaces the category-only summary in the previous version). Categories are reordered by importance; original A–T letters dropped in favor of 5.x numbering, IDs unchanged.
+Most relevant to: LLM Engineer, Research Scientist/Engineer, Applied Scientist, Inference/Serving and AI Infra roles. Full rows are inline here (this replaces the category-only summary in the previous version). Categories, topics and subtopics follow a learning order (each builds on the previous ones), not importance order; original A–T letters dropped in favor of 5.x numbering, IDs unchanged.
 
-## 5.1 Transformer Foundations
+## 5.1 Language Modeling and Tokenization
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
-| P0 | LLM-TRF-002 | Decoder-only Architecture (GPT-style) | causal masking; autoregressive generation loop; block dataflow |
-| P0 | LLM-TRF-008 | Parameter Count, FLOPs and Memory Estimation (new) | per-layer params (~12d²); training FLOPs ≈ 6ND; inference ≈ 2N FLOPs/token; weights + optimizer-state + activation memory |
-| P0 | LLM-TRF-009 | Implementing a Transformer Block from Scratch (new) | attention tensor shapes; mask implementation; numerically stable softmax; common bugs |
-| P0 | LLM-TRF-001 | Original Transformer Architecture | encoder-decoder; sublayers; residual + norm; "Attention Is All You Need" walkthrough |
-| P0 | LLM-TRF-005 | Normalization Strategies | Pre-LN vs Post-LN stability; LayerNorm vs RMSNorm; QK-Norm |
-| P1 | LLM-TRF-004 | Feed-Forward Networks and Activations | SwiGLU; GeGLU; GELU; expansion ratio |
-| P1 | LLM-TRF-003 | Encoder-only Architecture (BERT-style) | bidirectional attention; MLM; [CLS]/[SEP]; when to use encoders |
-| P1 | LLM-TRF-006 | Residual Connections and Depth Scaling | residual stream view; depth stability; residual scaling |
-| P2 | LLM-TRF-007 | Weight Initialization for Transformers | scaled init; muP; fan-in/out |
+| P0 | LLM-LMT-001 | Language Modeling Objectives | next-token cross-entropy; teacher forcing; perplexity; CLM vs MLM vs prefix LM; span corruption |
+| P0 | LLM-LMT-002 | Byte Pair Encoding (BPE) | merge algorithm; vocabulary construction; byte-level BPE; regex pre-tokenization |
+| P2 | LLM-LMT-004 | WordPiece | greedy longest-match; likelihood-based merges |
+| P1 | LLM-LMT-003 | Unigram LM Tokenization | SentencePiece; EM pruning; subword regularization; vs BPE |
+| P1 | LLM-LMT-005 | Tokenizer Design Trade-offs | vocab size vs sequence length; multilingual cost; digit tokenization; code; byte-level / tokenizer-free |
+| P1 | LLM-LMT-006 | Embedding Layers and Weight Tying | input/output tying; embedding scaling; vocab projection cost |
+| P1 | LLM-LMT-007 | In-Context Learning and Prompting (new) | zero/few-shot prompting; prompt sensitivity; why ICL emerges |
 
 ## 5.2 Attention and Positional Encoding
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
 | P0 | LLM-ATN-001 | Scaled Dot-Product Attention | Q/K/V projections; why scale by √d_k; O(n²d) time/memory |
 | P0 | LLM-ATN-002 | Multi-Head Attention (MHA) | head splitting; per-head dim; concat + output projection; why multiple heads |
-| P0 | LLM-ATN-004 | Grouped-Query Attention (GQA) | grouping factor; KV-cache size formula; MHA vs MQA vs GQA |
-| P0 | LLM-ATN-007 | Rotary Position Embeddings (RoPE) | rotation derivation; relative-position property; frequency bands; context extension (PI, NTK-aware, YaRN) |
-| P1 | LLM-ATN-003 | Multi-Query Attention (MQA) | shared K/V; memory savings; quality trade-off |
-| P1 | LLM-ATN-005 | Multi-Head Latent Attention (MLA) | low-rank KV compression; decoupled RoPE; cache size vs GQA |
 | P1 | LLM-ATN-009 | Attention Masking Variants | causal; padding; sliding-window; block-sparse |
 | P1 | LLM-ATN-006 | Sinusoidal and Learned Positional Encodings | sinusoidal formula; learned absolute PE; extrapolation limits |
+| P0 | LLM-ATN-007 | Rotary Position Embeddings (RoPE) | rotation derivation; relative-position property; frequency bands; context extension (PI, NTK-aware, YaRN) |
 | P2 | LLM-ATN-008 | ALiBi and Relative Position Biases | linear bias; extrapolation vs RoPE |
+| P1 | LLM-ATN-003 | Multi-Query Attention (MQA) | shared K/V; memory savings; quality trade-off |
+| P0 | LLM-ATN-004 | Grouped-Query Attention (GQA) | grouping factor; KV-cache size formula; MHA vs MQA vs GQA |
+| P1 | LLM-ATN-005 | Multi-Head Latent Attention (MLA) | low-rank KV compression; decoupled RoPE; cache size vs GQA |
 
-## 5.3 LLM Inference Fundamentals
+## 5.3 Transformer Foundations
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
-| P0 | LLM-INF-001 | Prefill vs Decode Phases | compute-bound prefill vs memory-bound decode; arithmetic intensity; phase bottlenecks |
+| P0 | LLM-TRF-001 | Original Transformer Architecture | encoder-decoder; sublayers; residual + norm; "Attention Is All You Need" walkthrough |
+| P1 | LLM-TRF-006 | Residual Connections and Depth Scaling | residual stream view; depth stability; residual scaling |
+| P0 | LLM-TRF-005 | Normalization Strategies | LayerNorm vs RMSNorm; Pre-LN vs Post-LN stability; QK-Norm |
+| P1 | LLM-TRF-004 | Feed-Forward Networks and Activations | expansion ratio; GELU; GeGLU; SwiGLU |
+| P1 | LLM-TRF-003 | Encoder-only Architecture (BERT-style) | bidirectional attention; MLM; [CLS]/[SEP]; when to use encoders |
+| P0 | LLM-TRF-002 | Decoder-only Architecture (GPT-style) | causal masking; autoregressive generation loop; block dataflow |
+| P0 | LLM-TRF-009 | Implementing a Transformer Block from Scratch (new) | attention tensor shapes; mask implementation; numerically stable softmax; common bugs |
+| P2 | LLM-TRF-007 | Weight Initialization for Transformers | scaled init; muP; fan-in/out |
+| P0 | LLM-TRF-008 | Parameter Count, FLOPs and Memory Estimation (new) | per-layer params (~12d²); training FLOPs ≈ 6ND; inference ≈ 2N FLOPs/token; weights + optimizer-state + activation memory |
+
+## 5.4 Pretraining and Data Engineering
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P2 | LLM-PRE-001 | Pretraining Corpus Construction | CommonCrawl pipelines; provenance and licensing |
+| P1 | LLM-PRE-002 | Data Deduplication | exact vs near-dup; MinHash/LSH; effects on memorization |
+| P1 | LLM-PRE-003 | Data Quality Filtering | heuristic filters; classifier filtering; perplexity filtering |
+| P1 | LLM-PRE-004 | Data Mixture Design | domain weights; up/down-sampling; DoReMi-style optimization |
+| P2 | LLM-PRE-007 | Synthetic Data for Pretraining | textbook-style synthetic corpora; contamination risk |
+| P0 | LLM-PRE-005 | Scaling Laws | loss vs compute/data/params; Kaplan laws; Chinchilla (~20 tokens/param) |
+| P1 | LLM-PRE-006 | Token Budget and Compute-Optimal Decisions | FLOPs budgeting; over-training for cheaper inference |
+
+## 5.5 Optimization and Distributed Training
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P0 | LLM-OPT-001 | AdamW for LLMs | decoupled weight decay; optimizer-state memory (2× params); β2 / ε at scale |
+| P1 | LLM-OPT-003 | Learning Rate Schedules and Warmup | warmup; cosine; WSD |
+| P0 | LLM-OPT-004 | Mixed Precision Training | BF16 vs FP16; FP32 master weights; loss scaling |
+| P1 | LLM-OPT-011 | Training Instability and Loss Spikes (new) | loss spikes; logit growth and z-loss; gradient clipping; attention-entropy collapse; debugging divergence |
+| P2 | LLM-OPT-002 | Muon and Orthogonalized Optimizers | Newton-Schulz orthogonalization; vs AdamW |
+| P1 | LLM-OPT-005 | Gradient Checkpointing | activation recomputation; memory vs compute |
+| P0 | LLM-OPT-006 | ZeRO and FSDP | ZeRO stages 1/2/3; sharding optimizer/gradients/params; communication overlap |
+| P1 | LLM-OPT-007 | Tensor Parallelism | column/row-parallel layers; all-reduce placement |
+| P1 | LLM-OPT-008 | Pipeline Parallelism | micro-batches; bubble fraction; 1F1B / interleaved |
+| P2 | LLM-OPT-009 | Expert Parallelism | expert placement; all-to-all cost |
+| P2 | LLM-OPT-010 | 3D/4D Parallelism Composition | combining TP + PP + DP + EP; topology mapping |
+
+## 5.6 Fine-tuning and Mid-training
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P0 | LLM-FTN-001 | Supervised Fine-Tuning (SFT) | chat templates; loss masking on prompt tokens; data quality vs quantity |
+| P1 | LLM-FTN-002 | Instruction Tuning and Dataset Construction | task diversity; FLAN-style mixtures; data curation |
+| P2 | LLM-FTN-006 | Adapters and Prefix/Prompt Tuning | bottleneck adapters; prefix tuning; soft prompts |
+| P0 | LLM-FTN-003 | LoRA | low-rank update math; rank/alpha; which layers; parameter savings; merging |
+| P1 | LLM-FTN-004 | QLoRA | NF4; double quantization; paged optimizers |
+| P2 | LLM-FTN-005 | DoRA and LoRA Variants | magnitude/direction decomposition |
+| P1 | LLM-FTN-009 | Knowledge Distillation for LLMs | logit vs sequence-level KD; on-policy distillation |
+| P1 | LLM-FTN-007 | Continual Pretraining and Mid-training | domain adaptation; replay mixes; catastrophic forgetting |
+| P3 | LLM-FTN-008 | Curriculum Learning for LLMs | difficulty ordering; staged curricula |
+
+## 5.7 Preference Optimization and RL Post-training
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P0 | LLM-PFO-001 | Reward Modeling | Bradley-Terry loss; preference data collection; RM over-optimization |
+| P0 | LLM-PFO-002 | RLHF with PPO | pipeline (SFT → RM → PPO); KL penalty to reference; critic/value model; memory cost of 4 models |
+| P0 | LLM-PFO-003 | Direct Preference Optimization (DPO) | derivation from KL-regularized RL; implicit reward; β; DPO vs PPO trade-offs |
+| P1 | LLM-PFO-004 | DPO Variants: IPO, KTO, SimPO, ORPO | IPO's fix for overfitting; KTO unpaired data; reference-free SimPO; ORPO combined loss |
+| P1 | LLM-PFO-009 | Reward Hacking and Preference-Optimization Pitfalls | length bias; sycophancy; over-optimization |
+| P1 | LLM-PFO-007 | RL with Verifiable Rewards (RLVR) | rule/verifier rewards; math and code checkers |
+| P0 | LLM-PFO-005 | GRPO | group-relative advantage; no value network; why it suits verifiable rewards |
+| P2 | LLM-PFO-006 | DAPO and GRPO Refinements | decoupled clipping; dynamic sampling; token-level loss |
+| P1 | LLM-PFO-008 | Process vs Outcome Reward Models | step-level vs final-answer supervision; PRM data |
+
+## 5.8 Reasoning and Test-time Compute
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P0 | LLM-RSN-001 | Chain-of-Thought and Self-Consistency | CoT elicitation; majority voting over samples |
+| P2 | LLM-RSN-004 | Self-Reflection and Self-Correction | critique loops; verifier-guided revision |
+| P2 | LLM-RSN-005 | Tree-of-Thought and Search-Based Reasoning | MCTS over steps; deliberate search |
+| P0 | LLM-RSN-003 | Test-Time Compute Scaling | best-of-N; verifier-guided search; compute-optimal inference |
+| P1 | LLM-RSN-002 | Reasoning-Oriented RL Training | o1/R1-style long-CoT RL; reward design |
+| P1 | LLM-RSN-006 | Distilling Reasoning Capabilities | long-CoT distillation into small models |
+
+## 5.9 Evaluation and Benchmarking
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P1 | LLM-EVL-001 | Knowledge and Reasoning Benchmarks | MMLU; GPQA; contamination and saturation |
+| P1 | LLM-EVL-002 | Mathematical Reasoning Benchmarks | GSM8K; MATH; AIME-style; answer verification |
+| P1 | LLM-EVL-003 | Coding Benchmarks | HumanEval pass@k; SWE-bench; execution-based eval |
+| P1 | LLM-EVL-006 | Calibration and Uncertainty for LLMs | verbalized vs logit confidence; selective prediction |
+| P0 | LLM-EVL-005 | Hallucination Detection and Measurement | factuality benchmarks; attribution / citation checks; mitigation |
+| P0 | LLM-EVL-004 | LLM-as-Judge Evaluation | pairwise vs pointwise; position/length/self bias; judge calibration |
+| P0 | LLM-EVL-007 | Building Task-Specific Eval Sets (new) | golden datasets; annotation guidelines and agreement; offline-online metric alignment; regression testing |
+
+## 5.10 LLM Inference Fundamentals
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
 | P0 | LLM-INF-002 | Decoding / Sampling Algorithms | greedy; temperature; top-k; top-p; min-p; repetition penalties |
-| P0 | LLM-INF-004 | Static vs Continuous Batching | iteration-level scheduling; padding waste; throughput gains |
-| P0 | LLM-INF-006 | Speculative Decoding Fundamentals | draft-then-verify; rejection sampling preserves distribution; acceptance rate and speedup |
+| P1 | LLM-INF-003 | Beam Search and Structured Decoding | beam search; grammar/JSON-constrained decoding |
+| P0 | LLM-INF-001 | Prefill vs Decode Phases | compute-bound prefill vs memory-bound decode; arithmetic intensity; phase bottlenecks |
 | P0 | LLM-INF-011 | Latency/Throughput Metrics | TTFT; TPOT / ITL; throughput vs latency; goodput and SLOs |
+| P0 | LLM-INF-004 | Static vs Continuous Batching | iteration-level scheduling; padding waste; throughput gains |
 | P1 | LLM-INF-005 | Chunked Prefill | interleaving prefill with decode; latency smoothing |
 | P1 | LLM-INF-010 | Disaggregated Prefill/Decode Serving | separate GPU pools; KV transfer; when it pays off |
-| P1 | LLM-INF-003 | Beam Search and Structured Decoding | beam search; grammar/JSON-constrained decoding |
+| P0 | LLM-INF-006 | Speculative Decoding Fundamentals | draft-then-verify; rejection sampling preserves distribution; acceptance rate and speedup |
 | P2 | LLM-INF-007 | Medusa | multiple decoding heads; tree verification |
 | P2 | LLM-INF-008 | EAGLE | feature-level drafting; EAGLE-1/2/3 |
 | P2 | LLM-INF-009 | Multi-Token Prediction | multiple next-token heads; training and inference use |
 
-## 5.4 KV Cache and Memory Optimization
+## 5.11 KV Cache and Memory Optimization
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
-| P0 | LLM-KVC-001 | KV Cache Fundamentals | why cache K/V; tensor shapes; memory formula (2·layers·kv_heads·head_dim·seq·batch·bytes); append mechanics |
+| P0 | LLM-KVC-001 | KV Cache Fundamentals | why cache K/V; append mechanics; tensor shapes; memory formula (2·layers·kv_heads·head_dim·seq·batch·bytes) |
 | P0 | LLM-KVC-002 | MHA vs MQA vs GQA vs MLA Cache Comparison | per-token cache size by variant; worked examples |
-| P0 | LLM-KVC-003 | PagedAttention | block tables; fragmentation; OS virtual-memory analogy |
+| P2 | LLM-KVC-008 | Static vs Dynamic KV Allocation | pre-allocated vs growable; implementation trade-offs |
+| P0 | LLM-KVC-003 | PagedAttention | fragmentation; OS virtual-memory analogy; block tables |
 | P1 | LLM-KVC-004 | Prefix Caching and RadixAttention | shared-prefix reuse; radix-tree index; cache hit rates |
 | P1 | LLM-KVC-005 | KV Cache Quantization | INT8/FP8 KV; per-token vs per-channel scales |
 | P1 | LLM-KVC-006 | Eviction: StreamingLLM and H2O | attention sinks; heavy-hitter eviction |
 | P2 | LLM-KVC-007 | Compression: SnapKV and PyramidKV | importance-based selection; layer-wise budgets |
 | P2 | LLM-KVC-009 | GPU/CPU KV Offloading | offload/prefetch; PCIe/NVLink bandwidth |
 | P2 | LLM-KVC-010 | Distributed KV Transfer and Cache-Aware Scheduling | cross-node KV transfer; cache-aware routing |
-| P2 | LLM-KVC-008 | Static vs Dynamic KV Allocation | pre-allocated vs growable; implementation trade-offs |
 
-## 5.5 Fine-tuning and Mid-training
+## 5.12 Inference Kernels and Hardware
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
-| P0 | LLM-FTN-003 | LoRA | low-rank update math; rank/alpha; which layers; merging; parameter savings |
-| P0 | LLM-FTN-001 | Supervised Fine-Tuning (SFT) | chat templates; loss masking on prompt tokens; data quality vs quantity |
-| P1 | LLM-FTN-004 | QLoRA | NF4; double quantization; paged optimizers |
-| P1 | LLM-FTN-002 | Instruction Tuning and Dataset Construction | task diversity; FLAN-style mixtures; data curation |
-| P1 | LLM-FTN-009 | Knowledge Distillation for LLMs | logit vs sequence-level KD; on-policy distillation |
-| P1 | LLM-FTN-007 | Continual Pretraining and Mid-training | domain adaptation; replay mixes; catastrophic forgetting |
-| P2 | LLM-FTN-005 | DoRA and LoRA Variants | magnitude/direction decomposition |
-| P2 | LLM-FTN-006 | Adapters and Prefix/Prompt Tuning | bottleneck adapters; prefix tuning; soft prompts |
-| P3 | LLM-FTN-008 | Curriculum Learning for LLMs | difficulty ordering; staged curricula |
-
-## 5.6 Preference Optimization and RL Post-training
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-PFO-002 | RLHF with PPO | pipeline (SFT → RM → PPO); KL penalty to reference; critic/value model; memory cost of 4 models |
-| P0 | LLM-PFO-003 | Direct Preference Optimization (DPO) | derivation from KL-regularized RL; implicit reward; β; DPO vs PPO trade-offs |
-| P0 | LLM-PFO-001 | Reward Modeling | Bradley-Terry loss; preference data collection; RM over-optimization |
-| P0 | LLM-PFO-005 | GRPO | group-relative advantage; no value network; why it suits verifiable rewards |
-| P1 | LLM-PFO-007 | RL with Verifiable Rewards (RLVR) | rule/verifier rewards; math and code checkers |
-| P1 | LLM-PFO-004 | DPO Variants: IPO, KTO, SimPO, ORPO | IPO's fix for overfitting; KTO unpaired data; reference-free SimPO; ORPO combined loss |
-| P1 | LLM-PFO-009 | Reward Hacking and Preference-Optimization Pitfalls | length bias; sycophancy; over-optimization |
-| P1 | LLM-PFO-008 | Process vs Outcome Reward Models | step-level vs final-answer supervision; PRM data |
-| P2 | LLM-PFO-006 | DAPO and GRPO Refinements | decoupled clipping; dynamic sampling; token-level loss |
-
-## 5.7 Retrieval and RAG
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-RAG-003 | RAG Fundamentals | chunking strategies; retrieve-then-generate; prompt assembly; failure modes |
-| P0 | LLM-RAG-001 | Embedding Models for Retrieval | contrastive training; bi-encoders; embedding dimension/normalization |
-| P0 | LLM-RAG-002 | Hybrid Search and Reranking | BM25 + dense fusion (RRF); cross-encoder rerankers; latency trade-offs |
-| P0 | LLM-RAG-008 | RAG Evaluation (new) | retrieval recall@k / MRR; faithfulness/groundedness; answer relevance; LLM-judged RAG metrics |
-| P1 | LLM-RAG-009 | Vector Databases and ANN Search (new) | HNSW; IVF / PQ; recall-latency trade-offs |
-| P1 | LLM-RAG-007 | Long Context vs RAG | when to retrieve vs stuff context; needle-in-a-haystack; lost-in-the-middle |
-| P1 | LLM-RAG-006 | Agentic RAG | iterative retrieval; query rewriting/decomposition |
-| P2 | LLM-RAG-005 | GraphRAG | graph construction; community summaries |
-| P2 | LLM-RAG-004 | Self-RAG and Adaptive Retrieval | retrieval-decision tokens; self-critique |
-
-## 5.8 Language Modeling and Tokenization
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-LMT-001 | Language Modeling Objectives | next-token cross-entropy; perplexity; teacher forcing; CLM vs MLM vs prefix LM; span corruption |
-| P0 | LLM-LMT-002 | Byte Pair Encoding (BPE) | merge algorithm; byte-level BPE; regex pre-tokenization; vocabulary construction |
-| P1 | LLM-LMT-007 | In-Context Learning and Prompting (new) | zero/few-shot prompting; prompt sensitivity; why ICL emerges |
-| P1 | LLM-LMT-005 | Tokenizer Design Trade-offs | vocab size vs sequence length; multilingual cost; digit tokenization; code; byte-level / tokenizer-free |
-| P1 | LLM-LMT-003 | Unigram LM Tokenization | SentencePiece; EM pruning; subword regularization; vs BPE |
-| P1 | LLM-LMT-006 | Embedding Layers and Weight Tying | input/output tying; embedding scaling; vocab projection cost |
-| P2 | LLM-LMT-004 | WordPiece | greedy longest-match; likelihood-based merges |
-
-## 5.9 Optimization and Distributed Training
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-OPT-001 | AdamW for LLMs | decoupled weight decay; optimizer-state memory (2× params); β2 / ε at scale |
-| P0 | LLM-OPT-006 | ZeRO and FSDP | ZeRO stages 1/2/3; sharding optimizer/gradients/params; communication overlap |
-| P0 | LLM-OPT-004 | Mixed Precision Training | BF16 vs FP16; loss scaling; FP32 master weights |
-| P1 | LLM-OPT-005 | Gradient Checkpointing | activation recomputation; memory vs compute |
-| P1 | LLM-OPT-007 | Tensor Parallelism | column/row-parallel layers; all-reduce placement |
-| P1 | LLM-OPT-008 | Pipeline Parallelism | micro-batches; bubble fraction; 1F1B / interleaved |
-| P1 | LLM-OPT-003 | Learning Rate Schedules and Warmup | warmup; cosine; WSD |
-| P1 | LLM-OPT-011 | Training Instability and Loss Spikes (new) | loss spikes; logit growth and z-loss; gradient clipping; attention-entropy collapse; debugging divergence |
-| P2 | LLM-OPT-002 | Muon and Orthogonalized Optimizers | Newton-Schulz orthogonalization; vs AdamW |
-| P2 | LLM-OPT-009 | Expert Parallelism | expert placement; all-to-all cost |
-| P2 | LLM-OPT-010 | 3D/4D Parallelism Composition | combining TP + PP + DP + EP; topology mapping |
-
-## 5.10 Reasoning and Test-time Compute
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-RSN-001 | Chain-of-Thought and Self-Consistency | CoT elicitation; majority voting over samples |
-| P0 | LLM-RSN-003 | Test-Time Compute Scaling | best-of-N; verifier-guided search; compute-optimal inference |
-| P1 | LLM-RSN-002 | Reasoning-Oriented RL Training | o1/R1-style long-CoT RL; reward design |
-| P1 | LLM-RSN-006 | Distilling Reasoning Capabilities | long-CoT distillation into small models |
-| P2 | LLM-RSN-005 | Tree-of-Thought and Search-Based Reasoning | MCTS over steps; deliberate search |
-| P2 | LLM-RSN-004 | Self-Reflection and Self-Correction | critique loops; verifier-guided revision |
-
-## 5.11 Inference Kernels and Hardware
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-KRN-001 | FlashAttention | tiling; online softmax; SRAM vs HBM; why IO-awareness gives speedup |
 | P0 | LLM-KRN-005 | GPU Memory Hierarchy and Roofline | HBM/SRAM bandwidth; arithmetic intensity; compute- vs memory-bound |
+| P1 | LLM-KRN-004 | CUDA and Triton Kernel Programming | fused kernels; memory coalescing; occupancy |
+| P0 | LLM-KRN-001 | FlashAttention | SRAM vs HBM; tiling; online softmax; why IO-awareness gives speedup |
 | P1 | LLM-KRN-002 | FlashAttention-2 and -3 | work partitioning; FP8; Hopper features (TMA, warp specialization) |
 | P1 | LLM-KRN-003 | Flash-Decoding and FlashInfer | split-KV decode parallelism; paged-KV kernels |
-| P1 | LLM-KRN-004 | CUDA and Triton Kernel Programming | fused kernels; memory coalescing; occupancy |
-| P2 | LLM-KRN-007 | Performance Profiling | Nsight / torch profiler; finding bottleneck kernels |
 | P2 | LLM-KRN-006 | CUDA Graphs for Inference | launch overhead; capture/replay |
+| P2 | LLM-KRN-007 | Performance Profiling | Nsight / torch profiler; finding bottleneck kernels |
 
-## 5.12 Quantization and Compression
+## 5.13 Quantization and Compression
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
 | P0 | LLM-QNT-001 | Quantization Fundamentals | symmetric vs asymmetric; per-tensor/channel/group; weight-only vs weight+activation; outliers |
+| P1 | LLM-QNT-006 | QAT vs PTQ | accuracy vs cost; when QAT is worth it |
 | P1 | LLM-QNT-002 | GPTQ | second-order error compensation; layer-wise PTQ |
 | P1 | LLM-QNT-003 | AWQ | activation-aware salient weights; per-channel scaling |
-| P1 | LLM-QNT-005 | FP8 and FP4 Inference | E4M3/E5M2; microscaling (MX) formats; scaling factors |
 | P1 | LLM-QNT-004 | SmoothQuant | migrating activation outliers into weights; W8A8 |
-| P1 | LLM-QNT-006 | QAT vs PTQ | accuracy vs cost; when QAT is worth it |
+| P1 | LLM-QNT-005 | FP8 and FP4 Inference | E4M3/E5M2; microscaling (MX) formats; scaling factors |
 | P2 | LLM-QNT-007 | Pruning and Sparsity | structured vs unstructured; 2:4 sparsity |
 
-## 5.13 Agents and Tool Use
+## 5.14 LLM Serving Systems
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-AGT-001 | Function / Tool Calling | tool schemas; invocation formats; error handling |
-| P0 | LLM-AGT-002 | ReAct | thought/action/observation loop; failure modes |
-| P1 | LLM-AGT-007 | Structured Output Generation | JSON mode; grammar-constrained decoding; schema validation |
-| P1 | LLM-AGT-005 | Model Context Protocol (MCP) | client/server architecture; tools vs resources vs prompts |
-| P1 | LLM-AGT-003 | Agent Planning Strategies | task decomposition; plan-and-execute |
-| P1 | LLM-AGT-006 | Long-Term Agent Memory | episodic vs semantic memory; memory retrieval |
-| P1 | LLM-AGT-009 | Agent Evaluation and Failure Modes (new) | task-success metrics; trajectory evaluation; loops and tool misuse |
-| P2 | LLM-AGT-004 | Multi-Agent Orchestration | role specialization; debate/consensus; coordination overhead |
-| P2 | LLM-AGT-008 | Computer-Use and GUI Agents | screen parsing; action grounding; benchmarks |
-
-## 5.14 Evaluation and Benchmarking
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-EVL-007 | Building Task-Specific Eval Sets (new) | golden datasets; annotation guidelines and agreement; offline-online metric alignment; regression testing |
-| P0 | LLM-EVL-004 | LLM-as-Judge Evaluation | pairwise vs pointwise; position/length/self bias; judge calibration |
-| P0 | LLM-EVL-005 | Hallucination Detection and Measurement | factuality benchmarks; attribution / citation checks; mitigation |
-| P1 | LLM-EVL-001 | Knowledge and Reasoning Benchmarks | MMLU; GPQA; contamination and saturation |
-| P1 | LLM-EVL-003 | Coding Benchmarks | HumanEval pass@k; SWE-bench; execution-based eval |
-| P1 | LLM-EVL-002 | Mathematical Reasoning Benchmarks | GSM8K; MATH; AIME-style; answer verification |
-| P1 | LLM-EVL-006 | Calibration and Uncertainty for LLMs | verbalized vs logit confidence; selective prediction |
-
-## 5.15 Advanced Architectures and MoE
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-ARC-001 | Mixture-of-Experts Fundamentals | top-k gating; sparse activation; total vs active params |
-| P0 | LLM-ARC-002 | MoE Load Balancing and Routing | auxiliary loss; capacity factor; token dropping; router z-loss |
-| P1 | LLM-ARC-007 | State-Space Models: Mamba and Mamba-2 | selective SSM; parallel scan; SSD duality; vs attention |
-| P1 | LLM-ARC-004 | Sliding-Window and Local Attention | window size; local+global layer patterns |
-| P1 | LLM-ARC-003 | DeepSeekMoE and Fine-Grained Experts | shared experts; fine-grained segmentation; aux-loss-free balancing |
-| P1 | LLM-ARC-011 | Long-Context Architecture Techniques | context extension; memory/retrieval-augmented architectures |
-| P2 | LLM-ARC-006 | Linear Attention | kernelized attention; RWKV; linear-time derivation |
-| P2 | LLM-ARC-009 | Hybrid Attention/SSM Architectures | Jamba / Zamba-style interleaving |
-| P2 | LLM-ARC-008 | Gated DeltaNet and Linear-Recurrent Models | delta rule; gating; vs Mamba |
-| P2 | LLM-ARC-005 | Sparse and Block-Sparse Attention | strided; BigBird/Longformer patterns |
-| P3 | LLM-ARC-010 | Cross-Layer KV Sharing | layer-wise KV sharing; memory beyond GQA/MLA |
-
-## 5.16 Pretraining and Data Engineering
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-PRE-005 | Scaling Laws | Chinchilla (~20 tokens/param); Kaplan laws; loss vs compute/data/params |
-| P1 | LLM-PRE-006 | Token Budget and Compute-Optimal Decisions | FLOPs budgeting; over-training for cheaper inference |
-| P1 | LLM-PRE-002 | Data Deduplication | exact vs near-dup; MinHash/LSH; effects on memorization |
-| P1 | LLM-PRE-003 | Data Quality Filtering | heuristic filters; classifier filtering; perplexity filtering |
-| P1 | LLM-PRE-004 | Data Mixture Design | domain weights; up/down-sampling; DoReMi-style optimization |
-| P2 | LLM-PRE-001 | Pretraining Corpus Construction | CommonCrawl pipelines; provenance and licensing |
-| P2 | LLM-PRE-007 | Synthetic Data for Pretraining | textbook-style synthetic corpora; contamination risk |
-
-## 5.17 Interpretability, Reliability and Safety
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
-|---|---|---|---|
-| P0 | LLM-SAF-004 | Prompt Injection and Jailbreaks | direct vs indirect injection; jailbreak taxonomies; defenses |
-| P1 | LLM-SAF-007 | Production Reliability and Guardrails | input/output filters; monitoring; fallbacks |
-| P1 | LLM-SAF-002 | Sparse Autoencoders | dictionary learning on activations; monosemantic features |
-| P1 | LLM-SAF-001 | Mechanistic Interpretability Fundamentals | circuits; features; superposition |
-| P2 | LLM-SAF-003 | Activation Patching and Causal Tracing | causal interventions; localizing computation |
-| P2 | LLM-SAF-005 | Adversarial Attacks on LLMs | adversarial suffixes (GCG); robustness evals |
-| P2 | LLM-SAF-006 | Privacy Risks in LLMs | memorization; training-data extraction; DP mitigations |
-
-## 5.18 LLM Serving Systems
-
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
 | P0 | LLM-SRV-001 | vLLM Architecture and Scheduling | PagedAttention integration; continuous batching; scheduler loop |
 | P1 | LLM-SRV-002 | SGLang Architecture | RadixAttention; structured generation |
-| P1 | LLM-SRV-006 | Scheduler Design and Request Routing | SLO-aware scheduling; load balancing; preemption |
 | P1 | LLM-SRV-003 | TensorRT-LLM | kernel fusion; engine compilation |
-| P2 | LLM-SRV-005 | llama.cpp and CPU/Edge Inference | GGUF; quantized CPU inference |
 | P2 | LLM-SRV-004 | TGI and Other Serving Frameworks | architecture comparison |
+| P2 | LLM-SRV-005 | llama.cpp and CPU/Edge Inference | GGUF; quantized CPU inference |
+| P1 | LLM-SRV-006 | Scheduler Design and Request Routing | SLO-aware scheduling; load balancing; preemption |
 | P2 | LLM-SRV-007 | Autoscaling and Multi-Model Serving | model multiplexing; cold starts |
 
-## 5.19 Multimodal LLM Foundations
+## 5.15 Advanced Architectures and MoE
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P0 | LLM-ARC-001 | Mixture-of-Experts Fundamentals | sparse activation; top-k gating; total vs active params |
+| P0 | LLM-ARC-002 | MoE Load Balancing and Routing | auxiliary loss; capacity factor; token dropping; router z-loss |
+| P1 | LLM-ARC-003 | DeepSeekMoE and Fine-Grained Experts | shared experts; fine-grained segmentation; aux-loss-free balancing |
+| P1 | LLM-ARC-004 | Sliding-Window and Local Attention | window size; local+global layer patterns |
+| P2 | LLM-ARC-005 | Sparse and Block-Sparse Attention | strided; BigBird/Longformer patterns |
+| P3 | LLM-ARC-010 | Cross-Layer KV Sharing | layer-wise KV sharing; memory beyond GQA/MLA |
+| P1 | LLM-ARC-011 | Long-Context Architecture Techniques | context extension; memory/retrieval-augmented architectures |
+| P2 | LLM-ARC-006 | Linear Attention | kernelized attention; RWKV; linear-time derivation |
+| P1 | LLM-ARC-007 | State-Space Models: Mamba and Mamba-2 | selective SSM; parallel scan; SSD duality; vs attention |
+| P2 | LLM-ARC-008 | Gated DeltaNet and Linear-Recurrent Models | delta rule; gating; vs Mamba |
+| P2 | LLM-ARC-009 | Hybrid Attention/SSM Architectures | Jamba / Zamba-style interleaving |
+
+## 5.16 Retrieval and RAG
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P0 | LLM-RAG-003 | RAG Fundamentals | retrieve-then-generate; chunking strategies; prompt assembly; failure modes |
+| P0 | LLM-RAG-001 | Embedding Models for Retrieval | contrastive training; bi-encoders; embedding dimension/normalization |
+| P1 | LLM-RAG-009 | Vector Databases and ANN Search (new) | HNSW; IVF / PQ; recall-latency trade-offs |
+| P0 | LLM-RAG-002 | Hybrid Search and Reranking | BM25 + dense fusion (RRF); cross-encoder rerankers; latency trade-offs |
+| P0 | LLM-RAG-008 | RAG Evaluation (new) | retrieval recall@k / MRR; faithfulness/groundedness; answer relevance; LLM-judged RAG metrics |
+| P1 | LLM-RAG-007 | Long Context vs RAG | when to retrieve vs stuff context; needle-in-a-haystack; lost-in-the-middle |
+| P2 | LLM-RAG-004 | Self-RAG and Adaptive Retrieval | retrieval-decision tokens; self-critique |
+| P1 | LLM-RAG-006 | Agentic RAG | iterative retrieval; query rewriting/decomposition |
+| P2 | LLM-RAG-005 | GraphRAG | graph construction; community summaries |
+
+## 5.17 Agents and Tool Use
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P0 | LLM-AGT-001 | Function / Tool Calling | tool schemas; invocation formats; error handling |
+| P1 | LLM-AGT-007 | Structured Output Generation | JSON mode; grammar-constrained decoding; schema validation |
+| P0 | LLM-AGT-002 | ReAct | thought/action/observation loop; failure modes |
+| P1 | LLM-AGT-003 | Agent Planning Strategies | task decomposition; plan-and-execute |
+| P1 | LLM-AGT-006 | Long-Term Agent Memory | episodic vs semantic memory; memory retrieval |
+| P1 | LLM-AGT-005 | Model Context Protocol (MCP) | client/server architecture; tools vs resources vs prompts |
+| P2 | LLM-AGT-004 | Multi-Agent Orchestration | role specialization; debate/consensus; coordination overhead |
+| P2 | LLM-AGT-008 | Computer-Use and GUI Agents | screen parsing; action grounding; benchmarks |
+| P1 | LLM-AGT-009 | Agent Evaluation and Failure Modes (new) | task-success metrics; trajectory evaluation; loops and tool misuse |
+
+## 5.18 Multimodal LLM Foundations
+
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
 | P1 | LLM-MLM-001 | Vision-Language Model Architectures | vision encoder + projector + LLM; cross-attention vs token projection |
-| P1 | LLM-MLM-004 | Multimodal Instruction Tuning | visual instruction data; multimodal preference tuning |
-| P2 | LLM-MLM-002 | Multimodal Pretraining Objectives | contrastive + generative objectives |
 | P2 | LLM-MLM-003 | Tokenizing Non-Text Modalities | image patches; audio tokens |
+| P2 | LLM-MLM-002 | Multimodal Pretraining Objectives | contrastive + generative objectives |
+| P1 | LLM-MLM-004 | Multimodal Instruction Tuning | visual instruction data; multimodal preference tuning |
+
+## 5.19 Interpretability, Reliability and Safety
+
+| Pri | ID | Topic | Subtopics (learning order) |
+|---|---|---|---|
+| P1 | LLM-SAF-001 | Mechanistic Interpretability Fundamentals | circuits; features; superposition |
+| P2 | LLM-SAF-003 | Activation Patching and Causal Tracing | causal interventions; localizing computation |
+| P1 | LLM-SAF-002 | Sparse Autoencoders | dictionary learning on activations; monosemantic features |
+| P0 | LLM-SAF-004 | Prompt Injection and Jailbreaks | direct vs indirect injection; jailbreak taxonomies; defenses |
+| P2 | LLM-SAF-005 | Adversarial Attacks on LLMs | adversarial suffixes (GCG); robustness evals |
+| P2 | LLM-SAF-006 | Privacy Risks in LLMs | memorization; training-data extraction; DP mitigations |
+| P1 | LLM-SAF-007 | Production Reliability and Guardrails | input/output filters; monitoring; fallbacks |
 
 ## 5.20 Production LLMOps and Emerging Research
 
-| Pri | ID | Topic | Subtopics (most-asked first) |
+| Pri | ID | Topic | Subtopics (learning order) |
 |---|---|---|---|
-| P1 | LLM-OPS-003 | Cost Optimization for LLM Serving | model routing/cascades; caching; batching economics |
-| P1 | LLM-OPS-002 | Observability and Monitoring | tracing; drift; cost/latency dashboards |
 | P2 | LLM-OPS-001 | LLMOps Pipelines | prompt/model versioning; deployment pipelines |
+| P1 | LLM-OPS-002 | Observability and Monitoring | tracing; drift; cost/latency dashboards |
+| P1 | LLM-OPS-003 | Cost Optimization for LLM Serving | model routing/cascades; caching; batching economics |
 | P3 | LLM-OPS-004 | Emerging Architecture and Training Research | placeholder for frontier items, labeled established / emerging / unreplicated during research |
 
 ---
 
 # Domain 6 — Modern Reinforcement Learning (prefix MRL)
 
-Most relevant to: LLM post-training / reasoning teams, RL Research Scientist. Overlaps with Domain 3 (classical RL) and Domain 5.6 / 5.10 are cross-referenced, not duplicated.
+Most relevant to: LLM post-training / reasoning teams, RL Research Scientist. Overlaps with Domain 3 (classical RL) and Domain 5.7 / 5.8 are cross-referenced, not duplicated.
 
 ## 6.1 RL for LLM Reasoning (cross-ref LLM-PFO-007, LLM-RSN-002)
 
@@ -779,7 +779,7 @@ Most relevant to: LLM post-training / reasoning teams, RL Research Scientist. Ov
 | P1 | MRL-RSN-003 | Process Reward Models for RL | step-level vs outcome rewards; PRM training signal |
 | P1 | MRL-RSN-004 | Practical Dynamics of LLM RL Training (new) | entropy collapse; KL-penalty choices; rollout staleness / off-policyness; length bias |
 
-## 6.2 Preference Optimization as RL (cross-ref Domain 5.6)
+## 6.2 Preference Optimization as RL (cross-ref Domain 5.7)
 
 | Pri | ID | Topic | Subtopics (most-asked first) |
 |---|---|---|---|
@@ -945,7 +945,7 @@ Most relevant to: CV / generative-media Research and Applied Scientists, multimo
 ## What changed in this revamp
 
 - Every topic has a **P0–P3 tier**. Categories, rows, and subtopic lists are ordered most-important first.
-- **Domain 5 is now fully inline** (no longer a category summary pointing to another file).
+- **Domain 5 is now fully inline** (no longer a category summary pointing to another file), and is ordered as a learning path (prerequisites first) rather than by importance.
 - **New high-frequency topics added** — all marked **(new)**:
   - **Classical ML:** a whole Neural Network Fundamentals category (backprop, optimizers, normalization, losses, activations, dropout, init, numerical stability), plus ML System Design, Recommender Systems, k-NN, and Hypothesis/A-B Testing.
   - **Classical RL:** Generalized Advantage Estimation (GAE), discounting/reward shaping, and deep-RL exploration strategies.

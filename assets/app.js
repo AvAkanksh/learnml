@@ -173,6 +173,7 @@
         <div class="eyebrow">Domain ${d.num} · prefix ${esc(d.prefix)}</div>
         <h1>${esc(d.name)}</h1>
         <p>${esc(d.audience)}</p>
+        ${d.num === 5 ? `<p><strong>Learning order:</strong> categories and topics are arranged so each builds on the previous ones. Go top to bottom, or use the P0 filter for the interview core.</p>` : ""}
         <div class="head-progress"><span>${k}/${ids.length} done</span><div class="progress"><i style="width:${pct(k, ids.length)}%"></i></div><span>${pct(k, ids.length)}%</span></div>
       </div>
       ${filtersBar()}
@@ -190,7 +191,7 @@
       <div class="page-head">
         <div class="eyebrow">Full curriculum</div>
         <h1>Every topic, by domain</h1>
-        <p>Categories inside each domain are ordered by importance, and topics inside each category run P0 → P3. Click a category to expand it.</p>
+        <p>Categories inside each domain are ordered by importance, and topics inside each category run P0 → P3. Domain 5 is the exception: it is laid out as a learning path, so each topic builds on the ones before it. Click a category to expand it.</p>
         <div class="head-progress"><span>${k}/${order.length} done</span><div class="progress"><i style="width:${pct(k, order.length)}%"></i></div><span>${pct(k, order.length)}%</span></div>
       </div>
       ${filtersBar()}
@@ -238,11 +239,13 @@
     const d = domainOf(t.domain), c = catOf(t);
     const idx = order.indexOf(id);
     const prev = T(order[idx - 1]), next = T(order[idx + 1]);
+    const scored = t.resources.some((r) => r.score);
     const res = t.resources.map((r, i) => {
       const meta = [r.type && `<span class="chip">${esc(r.type)}</span>`,
         r.access && `<span class="chip">${esc(r.access)}</span>`,
-        r.score && `<span class="score">score ${esc(r.score)}</span>`].filter(Boolean).join("");
-      return `<a class="res ${i < 3 ? "top" : ""} ${visited.has(r.url) ? "visited" : ""}" href="${esc(r.url)}" target="_blank" rel="noopener" data-url="${esc(r.url)}">
+        r.score && `<span class="score" title="${esc(r.scoreDetail || "")}">score ${esc(r.score)}/100${r.provisional ? " · provisional" : ""}</span>`,
+        scored && i < 3 && r.score && `<span class="top3">Top ${i + 1}</span>`].filter(Boolean).join("");
+      return `<a class="res ${i < 3 && (!scored || r.score) ? "top" : ""} ${visited.has(r.url) ? "visited" : ""}" href="${esc(r.url)}" target="_blank" rel="noopener" data-url="${esc(r.url)}">
         <span class="res-rank">${esc(r.rank || i + 1)}</span>
         <div><h4>${inline(r.title)}</h4>
           <div class="host"><span>${esc(host(r.url))} ↗</span>${meta}</div>
@@ -263,6 +266,7 @@
       </div>
       <div class="topic-layout">
         <div>
+          ${scored ? `<p class="score-note">Ranked by research score (0–100: depth, relevance, pedagogy, implementation, authority, currency, usefulness). Hover a score for its breakdown. Paywalled items weren't scored and are listed last.</p>` : ""}
           ${res ? `<div class="res-list">${res}</div>` : `<div class="plate empty">No resources collected for this topic yet.</div>`}
           ${t.notes.length ? `<details class="notes"><summary>Research notes for this topic</summary>${t.notes.map((n) => `<div>${inline(n)}</div>`).join("")}</details>` : ""}
           <div class="pager">

@@ -15,8 +15,35 @@ CAT_RE = re.compile(r"^## (\d+)\.(\d+) (.+)")
 TOPIC_HEAD_RE = re.compile(r"^## ([A-Z0-9]+-[A-Z0-9]+-\d+)\s+—\s+(.+?)\s*(?:\[(P[0-3])\])?\s*$")
 
 
+SCORED_SOURCES = {5: ROOT / "old" / "Domain-5"}  # domains whose resources carry research scores
+
+
 def cells(line):
-    return [c.strip() for c in line.strip().strip("|").split("|")]
+    parts = re.split(r"(?<!\\)\|", line.strip().strip("|"))
+    return [c.strip().replace("\\|", "|") for c in parts]
+
+
+def parse_score(raw):
+    """'94 (Depth 97, ...) (provisional)' -> (94, 'Depth 97, ...', True); 'None (...)' -> (None, '', False)."""
+    m = re.match(r"\s*(\d+(?:\.\d+)?)", raw or "")
+    if not m:
+        return None, "", False
+    detail = re.search(r"\((Depth[^)]*)\)", raw)
+    return float(m[1]), detail[1] if detail else "", "provisional" in raw
+
+
+def rank_by_score(resources):
+    """Sort scored resources best-first (unscored/paywalled last, original order kept for ties)."""
+    for r in resources:
+        val, detail, prov = parse_score(r["score"])
+        r["score"] = (f"{val:g}" if val is not None else "")
+        r["scoreDetail"], r["provisional"] = detail, prov
+        r["_v"] = val
+    resources.sort(key=lambda r: -(r["_v"] if r["_v"] is not None else -1))
+    for i, r in enumerate(resources, 1):
+        r["rank"] = str(i)
+        del r["_v"]
+    return resources
 
 
 def parse_taxonomy():
@@ -51,7 +78,7 @@ def parse_table(lines):
     resources, notes = [], []
     for line in lines[2:]:
         row = dict(zip(head, cells(line)))
-        url = row.get("URL", "")
+        url = row.get("URL", "").split(" ")[0]
         if url.startswith("http"):
             resources.append({
                 "rank": row.get("Rank", ""),
@@ -125,6 +152,13 @@ def main():
             for t in parse_category_file(f)[1]:
                 file_topics[t["id"]] = t
                 file_of[t["id"]] = str(f.relative_to(ROOT))
+        if d["num"] in SCORED_SOURCES:
+            # scored research files replace resources (and notes) for the topics they cover
+            for f in sorted(SCORED_SOURCES[d["num"]].glob("*.md")):
+                for t in parse_category_file(f)[1]:
+                    if t["id"] in file_topics and t["resources"]:
+                        file_topics[t["id"]].update(resources=rank_by_score(t["resources"]),
+                                                    notes=t["notes"])
         placed = set()
         for cat in d["categories"]:
             files = [file_of[t] for t in cat["topics"] if t in file_of]

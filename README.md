@@ -2,7 +2,7 @@
 
 **Website: https://avakanksh.github.io/learnml/**
 
-406 ML interview topics across 7 domains, ranked P0–P3 by how often they come up, with 2,700+ curated blogs, tutorials and course notes.
+406 ML interview topics across 7 domains, ranked P0–P3 by how often they come up, with 3,000+ curated blogs, tutorials and course notes.
 
 | # | Domain | Notes |
 |---|---|---|
@@ -24,5 +24,7 @@ The site is plain HTML/JS (`index.html`, `assets/`) that reads `data.json`. Afte
 python3 build.py      # rewrites data.json from the markdown
 git add -A && git commit -m "Update notes" && git push
 ```
+
+Domain 5 resources come from the scored research files in `old/Domain-5/` (each resource has a 0–100 score; the site sorts by it and highlights the top 3). Domain 5's category/topic/subtopic order in the taxonomy is a learning path, so keep prerequisites first when editing it.
 
 To preview locally: `python3 -m http.server` and open http://localhost:8000.
