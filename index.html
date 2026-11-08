@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learn ML — Interview Field Guide</title>
+<meta name="description" content="406 ML interview topics across 7 domains, priority-ranked, with 2,700+ curated blogs, tutorials and course notes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c2410c'/><text x='16' y='22' font-family='Georgia' font-size='16' font-weight='700' fill='white' text-anchor='middle'>ML</text></svg>">
+<script>
+  try { const t = localStorage.getItem("learnml.theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#/"><span class="brand-mark">ML</span><span>Learn ML</span></a>
+    <nav class="topnav">
+      <a href="#/" data-nav="home">Home</a>
+      <a href="#/curriculum" data-nav="curriculum">Curriculum</a>
+      <a href="#/path/P0" data-nav="path">Study path</a>
+    </nav>
+    <div class="topbar-actions">
+      <button class="search-btn" id="openSearch" aria-label="Search topics">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <span>Search</span><kbd>/</kbd>
+      </button>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="app"><div class="loading">Loading…</div></main>
+
+<div class="search-overlay" id="searchOverlay" hidden>
+  <div class="search-panel" role="dialog" aria-label="Search">
+    <div class="search-input-row">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="searchInput" type="text" placeholder="Search topics, subtopics, resources…" autocomplete="off">
+      <kbd>esc</kbd>
+    </div>
+    <div id="searchResults" class="search-results"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div>Learn ML — a priority-ranked field guide for ML interviews. Progress is saved in this browser only.</div>
+  <div><a href="https://github.com/AvAkanksh/learnml">Source on GitHub</a></div>
+</footer>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
